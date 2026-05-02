@@ -1,6 +1,16 @@
-import Link from 'next/link'
+'use client'
+import { signIn, useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 
 export default function Home() {
+  const { data: session } = useSession()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (session) router.push('/menu')
+  }, [session])
+
   return (
     <main style={{
       minHeight: '100vh',
@@ -33,8 +43,9 @@ export default function Home() {
         TORRE NORTE
       </p>
 
-      <Link href="/menu">
-        <button style={{
+      <button
+        onClick={() => signIn('google')}
+        style={{
           background: '#2C1A0E',
           color: '#F5EDE0',
           border: 'none',
@@ -45,9 +56,8 @@ export default function Home() {
           cursor: 'pointer',
           letterSpacing: '1px'
         }}>
-          Entrar
-        </button>
-      </Link>
+        Entrar con Google
+      </button>
 
     </main>
   )
